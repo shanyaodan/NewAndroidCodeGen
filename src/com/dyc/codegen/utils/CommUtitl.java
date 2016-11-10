@@ -2,10 +2,12 @@ package com.dyc.codegen.utils;
 
 public class CommUtitl {
 
-
+	/**
+	 * 这个是固定的，eclipse应该是src
+	 */
 	public static String ideaPackage = "app/src/main/java/";
 	/**
-	 * 工程根目录
+	 * 工程根目录，绝对路径
 	 */
 	public static String projPath = "";
 

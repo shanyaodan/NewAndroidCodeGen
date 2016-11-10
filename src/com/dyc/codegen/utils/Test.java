@@ -14,37 +14,45 @@ public class Test {
     public static void main(String[] args) {
         File adapterparentfile = new File("temp/TempleteActivity1.txt");
     }
+
     public static void genadapter(String viewxmlpath) {
         Resource res = new Resource();
         String xmlName = viewxmlpath.substring(viewxmlpath.lastIndexOf("/") + 1, viewxmlpath.lastIndexOf(".xml"));
+        //文件绝对路径
         File adapterparentfile = new File(CommUtitl.projPath + CommUtitl.ideaPackage + CommUtitl.adapterPackageName);
-        if (new File(CommUtitl.projPath + CommUtitl.ideaPackage + CommUtitl.adapterPackageName + "/MyBaseAdapter.java").exists()) {
-        } else {
-            try {
-                if (!adapterparentfile.exists()) {
-                    adapterparentfile.mkdirs();
-                }
-                File baseadapterfile = new File(adapterparentfile, "MyBaseAdapter.java");
-                if (!baseadapterfile.exists()) {
-                    String strs = Utils.fromInputStreamToString(res.getBaseAdapterResource());
-                    String packagname = CommUtitl.adapterPackageName.replace("/", ".");
-                    strs = strs.replace("adapterpackageName", packagname + ";\nimport " + CommUtitl.projPackage.replace("/", ".") + ".R;");
-                    FileOutputStream fout = new FileOutputStream(baseadapterfile);
-                    fout.write(strs.getBytes("utf-8"));
-                    fout.flush();
-                    fout.close();
-                }
-            } catch (Exception e) {
-
-            }
+        if (!adapterparentfile.exists()) {
+            adapterparentfile.mkdirs();
         }
+        /**
+         * 判断是否有BaseAdapter,如果没有就创建
+         */
+//        if (new File(CommUtitl.projPath + CommUtitl.ideaPackage + CommUtitl.adapterPackageName + "/MyBaseAdapter.java").exists()) {
+//        } else {
+//            try {
+//                File baseadapterfile = new File(adapterparentfile, "MyBaseAdapter.java");
+//                if (!baseadapterfile.exists()) {
+//                    String strs = Utils.fromInputStreamToString(res.getBaseAdapterResource());
+//                    String packagname = CommUtitl.adapterPackageName.replace("/", ".");
+//                    strs = strs.replace("adapterpackageName", packagname + ";\nimport " + CommUtitl.projPackage.replace("/", ".") + ".R;");
+//                    FileOutputStream fout = new FileOutputStream(baseadapterfile);
+//                    fout.write(strs.getBytes("utf-8"));
+//                    fout.flush();
+//                    fout.close();
+//                }
+//            } catch (Exception e) {
+//
+//            }
+//        }
         try {
             String strs = Utils.fromInputStreamToString(res.getAdapterResource());
             String ss[] = ViewCodeUtil.getNewAdapterCode(viewxmlpath, CommUtitl.entityName);
             String packagname = CommUtitl.adapterPackageName.replace("/", ".");
+            String entityLongName = CommUtitl.entityppackage.replace("/", ".") + "." + CommUtitl.entityName;
+            String projectPath = CommUtitl.projPackage.replace("/", ".");
+
             strs = strs.replace("adapterPachagename", packagname);
-            strs = strs.replace("entityPath", CommUtitl.entityppackage);
-            strs = strs.replace("projPath", CommUtitl.projPackage.replace("/", "."));
+            strs = strs.replace("entityPath", entityLongName);
+            strs = strs.replace("projPath", projectPath);
             System.out.println(ss[0]);
             strs = strs.replace("//entitycollection", ss[0]);
             strs = strs.replace("//initAdapterView", ss[1]);
@@ -57,6 +65,7 @@ public class Test {
             File adapterfile = new File(adapterparentfile, CommUtitl.adapterName + ".java");
             FileOutputStream fo = new FileOutputStream(adapterfile);
             fo.write(strs.getBytes("utf-8"));
+            fo.flush();
             fo.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,9 +73,8 @@ public class Test {
     }
 
     /**
-     *
      * @param layoutFil  the file path
-     * @param entityname  entity name of gen
+     * @param entityname entity name of gen
      * @return
      */
     public static String genActivity(String layoutFil, String entityname) {
@@ -126,6 +134,7 @@ public class Test {
             return e.getMessage() + ">>error2222" + (CommUtitl.projPath + CommUtitl.ideaPackage + CommUtitl.activitypackageName).replace("\\", "/");
         }
     }
+
     public static void getFragment(String layoutFil) {
         Resource res = new Resource();
         String viewxmlname = layoutFil.substring(layoutFil.lastIndexOf("/") + 1, layoutFil.lastIndexOf("."));
