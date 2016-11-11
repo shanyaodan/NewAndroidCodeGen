@@ -106,6 +106,7 @@ public class EditDialog extends JDialog {
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
+
                     CommUtitl.projPackage = props.getProperty("projpackage", "com.dyc.test");
                     CommUtitl.fragmentpackagename = props.getProperty("fragmentpackagename",CommUtitl.projPackage + "/fragment");
                     CommUtitl.entityppackage = props.getProperty("entityppackage", CommUtitl.projPackage + "/entity");
